@@ -20,7 +20,7 @@
     <label>Tasa de Interés Anual (%):</label>
     <input type="number" id="tasa" value="12">
 
-    <button onclick="enviarDatos()">Calcular en la Nube</button>
+    <button onclick="enviarDatos()">Calcular Intereses</button>
 
     <div id="resultado"></div>
 
@@ -30,8 +30,7 @@
             const tasa = document.getElementById('tasa').value;
             const divResultado = document.getElementById('resultado');
 
-            //IMPORTANTE: Aquí pondrás la URL que te dé DigitalOcean para tu Backend
-            const URL_BACKEND = "https://tu-backend-en-digitalocean.ondigitalocean.app/calcular";
+            const URL_BACKEND = "http://127.0.0.1:5000/calcular";
 
             try {
                 const respuesta = await fetch(URL_BACKEND, {
