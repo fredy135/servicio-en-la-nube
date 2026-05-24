@@ -4,12 +4,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  
+CORS(app) 
 
 DB_FILE = 'banco.db'
 
 def init_db():
-    """Crea la tabla en la base de datos si no existe al arrancar el servidor"""
+    """Crea la tabla en la base de datos si no existe al arrancar"""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute('''
@@ -24,7 +24,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Inicializamos la base de datos 
 init_db()
 
 @app.route('/calcular', methods=['POST'])
@@ -40,7 +39,6 @@ def calcular():
         interes_mensual = round(interes_mensual, 2)
         total_pagar = round(total_pagar, 2)
         
-        #persistencia con SQLITE
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         cursor.execute('''
@@ -50,7 +48,6 @@ def calcular():
         conn.commit()
         conn.close()
         
-        # Responder al Frontend
         return jsonify({
             "monto": monto,
             "tasa": tasa,
@@ -63,14 +60,13 @@ def calcular():
 
 @app.route('/historial', methods=['GET'])
 def obtener_historial():
-    """Ruta extra para comprobar la base de datos"""
+    """Ruta para ver los datos guardados en la base de datos"""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute('SELECT monto, tasa, interes_mensual, total_pagar FROM historial ORDER BY id DESC')
     filas = cursor.fetchall()
     conn.close()
     
-    # Formateamos los datos como una lista de diccionarios JSON
     historial = []
     for fila in filas:
         historial.append({
